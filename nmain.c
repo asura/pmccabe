@@ -205,7 +205,7 @@ static void
 print_file_stats(const stats_summary_t* const summary, const stats_t* const sp, const stats_t* const fsp)
 {
 	assert(fsp != NULL);
-	if (Softbuild)
+	if (0 != Softbuild)
 	{
 	    printf("\"%s\", line 1: n/a", fsp->name);
 	    printf("%%\t%d\t%d\t%d\t%d\t%d\n",
@@ -215,7 +215,7 @@ print_file_stats(const stats_summary_t* const summary, const stats_t* const sp, 
 		    sp->firstline,
 		    summary->snlines);
 	}
-	else if (Cyco)
+	else if (0 != Cyco)
 	{
 	    printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%s\n",
 		summary->cycloswitch,
@@ -243,7 +243,7 @@ static void
 print_function_stats(const stats_summary_t* const summary, const stats_t* const sp, const stats_t* const fsp)
 {
 	assert(fsp != NULL);
-	if (Softbuild)
+	if (0 != Softbuild)
 	{
 	    printf("\"%s\", line %d: ", fsp->name, sp->defline);
 	    printname(sp);
@@ -254,7 +254,7 @@ print_function_stats(const stats_summary_t* const summary, const stats_t* const 
 		    sp->firstline,
 		    summary->snlines);
 	}
-	else if (Cyco)
+	else if (0 != Cyco)
 	{
 	    printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%s\t",
 		summary->cycloswitch,
@@ -284,29 +284,15 @@ print_function_stats(const stats_summary_t* const summary, const stats_t* const 
 	}
 }
 static void
-print_class_stats()
+print_class_stats(void)
 {
 	abort();
-	if (Softbuild)
-	{
-	}
-	else if (Cyco)
-	{
-	}
-	else
-	{
-	}
 }
 
 void
 printstats(stats_t *sp)
 {
     stats_summary_t summary;
-    static int t_cswitch = 0;
-    static int t_ccase = 0;
-    static int t_statements = 0;
-    static int t_lines = 0;
-    int snlines;
     const stats_t *fsp;
 
     summarize_stats(sp, &summary);
