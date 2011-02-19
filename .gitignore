@@ -1,0 +1,11 @@
+*.o
+*.gcno
+*.gcda
+*~
+*.png
+*.xml
+html
+*.out
+decomment
+pmccabe
+coverage.dot

@@ -102,7 +102,7 @@ softbuildprintstats(stats_t *fs, stats_t *fn)
 }
 
 static void
-printname(stats_t *sp)
+printname(const stats_t *sp)
 {
     if (sp != NULL)
     {
@@ -130,131 +130,140 @@ printname(stats_t *sp)
     }
 }
 
-void
-printstats(stats_t *sp)
-{
-    int basic, cycloswitch, cyclocase;
-    static int t_cswitch = 0;
-    static int t_ccase = 0;
-    static int t_statements = 0;
-    static int t_lines = 0;
+typedef struct {
+    int basic;
+    int cycloswitch;
+    int cyclocase;
     int snlines;
-    stats_t *fsp;
+} stats_summary_t;
 
-    basic = sp->nfor + sp->nwhile + sp->nif + sp->nand + sp->nor + sp->nq;
+static void
+summarize_stats(stats_t* const sp, stats_summary_t* const summary)
+{
+    summary->basic = sp->nfor + sp->nwhile + sp->nif + sp->nand + sp->nor + sp->nq;
 
-    sp->nstatements = basic - sp->nand - sp->nor + sp->nsemicolons;
+    sp->nstatements = summary->basic - sp->nand - sp->nor + sp->nsemicolons;
 
-    cycloswitch = sp->nfunctions + basic + sp->nswitch;
-    cyclocase = sp->nfunctions + basic + sp->ncase;
+    summary->cycloswitch = sp->nfunctions + summary->basic + sp->nswitch;
+    summary->cyclocase = sp->nfunctions + summary->basic + sp->ncase;
+
+    if (Ncssfunction)
+    {
+	summary->snlines = sp->nLines + 1;
+    }
+    else
+    {
+	summary->snlines = sp->lastline - sp->firstline + 1;
+    }
+}
+static const stats_t*
+backward_stats(const stats_t* const sp)
+{
+    const stats_t *fsp;
 
     for (fsp = sp; fsp != NULL && fsp->type != STATS_FILE; fsp = fsp->prev)
     {
     }
-
-    if (Ncssfunction)
-    {
-	snlines = sp->nLines + 1;
-    }
-    else
-    {
-	snlines = sp->lastline - sp->firstline + 1;
-    }
-
-    switch(sp->type)
-    {
-    case STATS_TOTAL:
+    return fsp;
+}
+static void
+print_total_stats(const stats_summary_t* const summary, const stats_t* const sp)
+{
 	if (Softbuild)
 	{
-	    printf("\"n/a\", line n/a: %s", sp->name);
-	    printf("%%\t%d\t%d\t%d\tn/a\t%d\n",
-		    cycloswitch,
-		    cyclocase,
-		    sp->nstatements,
-		    snlines);
+        printf("\"n/a\", line n/a: %s", sp->name);
+        printf("%%\t%d\t%d\t%d\tn/a\t%d\n",
+               summary->cycloswitch,
+               summary->cyclocase,
+               sp->nstatements,
+               summary->snlines);
 	}
 	else if (Cyco)
 	{
 	    printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%s\n",
-		cycloswitch,
-		cyclocase,
+		summary->cycloswitch,
+		summary->cyclocase,
 		sp->nstatements,
 		sp->firstline,
 		sp->defline,
 		sp->lastline,
-		snlines,
+		summary->snlines,
 		"Total");
 	}
 	else
 	{
 	    printf("%d\t%d\t%d\tn/a\t%d\t",
-		    cycloswitch,
-		    cyclocase,
+		    summary->cycloswitch,
+		    summary->cyclocase,
 		    sp->nstatements,
-		    snlines);
+		    summary->snlines);
 
 	    printf("Total\n");
 	}
-	break;
-    case STATS_FILE:
+}
+static void
+print_file_stats(const stats_summary_t* const summary, const stats_t* const sp, const stats_t* const fsp)
+{
 	assert(fsp != NULL);
 	if (Softbuild)
 	{
 	    printf("\"%s\", line 1: n/a", fsp->name);
 	    printf("%%\t%d\t%d\t%d\t%d\t%d\n",
-		    cycloswitch,
-		    cyclocase,
+		    summary->cycloswitch,
+		    summary->cyclocase,
 		    sp->nstatements,
 		    sp->firstline,
-		    snlines);
+		    summary->snlines);
 	}
 	else if (Cyco)
 	{
 	    printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%s\n",
-		cycloswitch,
-		cyclocase,
+		summary->cycloswitch,
+		summary->cyclocase,
 		sp->nstatements,
 		sp->firstline,
 		sp->defline,
 		sp->lastline,
-		snlines,
+		summary->snlines,
 		fsp->name);
 	}
 	else
 	{
 	    printf("%d\t%d\t%d\t%d\t%d\t",
-		    cycloswitch,
-		    cyclocase,
+		    summary->cycloswitch,
+		    summary->cyclocase,
 		    sp->nstatements,
 		    sp->firstline,
-		    snlines);
+		    summary->snlines);
 
 	    printf("%s\n", fsp->name);
 	}
-	break;
-    case STATS_FUNCTION:
+}
+static void
+print_function_stats(const stats_summary_t* const summary, const stats_t* const sp, const stats_t* const fsp)
+{
 	assert(fsp != NULL);
 	if (Softbuild)
 	{
 	    printf("\"%s\", line %d: ", fsp->name, sp->defline);
 	    printname(sp);
 	    printf("%%\t%d\t%d\t%d\t%d\t%d\n",
-		    cycloswitch,
-		    cyclocase,
+		    summary->cycloswitch,
+		    summary->cyclocase,
 		    sp->nstatements,
 		    sp->firstline,
-		    snlines);
+		    summary->snlines);
 	}
 	else if (Cyco)
 	{
 	    printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%s\t",
-		cycloswitch,
-		cyclocase,
+		summary->cycloswitch,
+		summary->cyclocase,
 		sp->nstatements,
 		sp->firstline,
 		sp->defline,
 		sp->lastline,
-		snlines,
+		summary->snlines,
 		fsp->name);
 	    printname(sp);
 	    putchar('\n');
@@ -262,19 +271,21 @@ printstats(stats_t *sp)
 	else
 	{
 	    printf("%d\t%d\t%d\t%d\t%d\t",
-		    cycloswitch,
-		    cyclocase,
+		    summary->cycloswitch,
+		    summary->cyclocase,
 		    sp->nstatements,
 		    sp->firstline,
-		    snlines);
+		    summary->snlines);
 
 	    printf("%s(%d): ", fsp->name, sp->defline);
 
 	    printname(sp);
 	    printf("\n");
 	}
-	break;
-    case STATS_CLASS:
+}
+static void
+print_class_stats()
+{
 	abort();
 	if (Softbuild)
 	{
@@ -285,6 +296,36 @@ printstats(stats_t *sp)
 	else
 	{
 	}
+}
+
+void
+printstats(stats_t *sp)
+{
+    stats_summary_t summary;
+    static int t_cswitch = 0;
+    static int t_ccase = 0;
+    static int t_statements = 0;
+    static int t_lines = 0;
+    int snlines;
+    const stats_t *fsp;
+
+    summarize_stats(sp, &summary);
+
+    fsp = backward_stats(sp);
+
+    switch(sp->type)
+    {
+    case STATS_TOTAL:
+        print_total_stats(&summary, sp);
+	break;
+    case STATS_FILE:
+        print_file_stats(&summary, sp, fsp);
+	break;
+    case STATS_FUNCTION:
+        print_function_stats(&summary, sp, fsp);
+	break;
+    case STATS_CLASS:
+        print_class_stats();
 	break;
     }
 }
