@@ -5,7 +5,7 @@
 #include "dmain.h"
 
 int
-matchcurly()
+matchcurly(void)
 {
     int c;
     int nest = 1;
@@ -34,7 +34,7 @@ matchcurly()
 }
 
 int
-matchparen()
+matchparen(void)
 {
     int c;
     int nest = 1;
@@ -63,7 +63,7 @@ matchparen()
 }
 
 int
-skipws()
+skipws(void)
 {
     int c;
 
@@ -169,8 +169,6 @@ gettoken(char *buf, int *line, int *nLine)
  */
 {
     int c;
-    int colon = FALSE;
-    char *startbuf = buf;
 
     /* skip whitespace */
     c = skipws();
@@ -200,8 +198,6 @@ gettoken2(char *buf, int *line, int *nLine)
  */
 {
     int c, c1, c2;
-    int colon = FALSE;
-    char *startbuf = buf;
 
     /* skip whitespace */
     c = skipws();

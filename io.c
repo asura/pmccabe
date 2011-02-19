@@ -38,7 +38,7 @@ Ungets(char *s)
 }
 
 int
-Getchar()
+Getchar(void)
 {
     int c;
     if (Unptr == Unbuf)

@@ -87,7 +87,7 @@ int fancygettoken(char *buf, int classflag, int *line, int *nLine);
 int toplevelstatement(stats_t *stats);
 int findchar(char fc);
 int maybeclass(void);
-void findsemicolon();
+void findsemicolon(void);
 int getoverloadedop(char *buf);
 int fancyfunction(char *buf, stats_t *fs, stats_t *fn);
 void possiblefn(stats_t *stats, const char *name, int line1, int defline, int nLine1);
@@ -101,7 +101,7 @@ int decomment_files(int argc, char *argv []);
 int ncss_files(int argc, char *argv []);
 
 /* gettoken.c */
-int matchcurly();
+int matchcurly(void);
 int matchparen(void);
 int skipws(void);
 int getsimpleident(char *buf);
@@ -109,6 +109,7 @@ int gettoken(char *buf, int *line, int *nLine);
 int gettoken2(char *buf, int *line, int *nLine);
 void operatorident(char *s, int c);
 int identify(const char *ident);
+void ungettoken(int c, char *s);
 
 void Ungetc(int c);
 void ncss_Ungetc(int c);

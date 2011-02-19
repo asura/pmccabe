@@ -8,6 +8,10 @@ int ncss_Line;
 
 /* $Id: dmain.c,v 1.16 2001/01/26 23:00:32 bame Exp $ */
 
+static void decomment_file(char *fname, FILE *f);
+static void ncss(FILE *in, int *linesp, int *nclinesp);
+static void ncss_file(char *fname, FILE *f, int *linesp, int *nclinesp);
+
 static int Lastc = '\n';
 
 short Pipe[SIZE];
@@ -21,7 +25,7 @@ char Inputfile[1030];
 int Cppflag = 0;
 
 int
-decomment()
+decomment(void)
 {
     register int c, c1;
 
@@ -177,7 +181,7 @@ decomment()
 }
 
 
-void
+static void
 decomment_file(char *fname, FILE *f)
 {
     int c;
@@ -241,7 +245,7 @@ ncss_Ungets(char *s)
 }
 
 int
-ncss_Getchar()
+ncss_Getchar(void)
 {
     int c;
     static int blankline = 1;
@@ -275,7 +279,7 @@ ncss_Getchar()
     return c;
 }
 
-void
+static void
 ncss(FILE *in, int *linesp, int *nclinesp)
 {
     int c;
@@ -301,7 +305,7 @@ ncss(FILE *in, int *linesp, int *nclinesp)
     *nclinesp = nclines;
 }
 
-void
+static void
 ncss_file(char *fname, FILE *f, int *linesp, int *nclinesp)
 {
     extern int Cppflag;

@@ -20,8 +20,6 @@ extern int optind;
 #include <stdlib.h>
 #include <ctype.h>
 
-static char id[] = "$Header: /gjd/tools/pmccabe/decomment.c 1.2 2001/01/26 23:00:35 bame Exp $";
-
 static int G_removeBlankLines = 1;
 static const char *G_lang;
 

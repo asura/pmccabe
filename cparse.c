@@ -7,6 +7,8 @@
 
 /* $Id: cparse.c,v 1.24 2001/01/26 23:00:30 bame Exp $ */
 
+static int maybenamespace(void);
+
 int
 fancygettoken(char *buf, int classflag, int *line, int *nLine)
 {
@@ -178,7 +180,7 @@ findchar(char fc)
 }
 
 int
-maybeclass()
+maybeclass(void)
 /*
  * We've just seen "class" at the top level in a file so
  * we may be entering a definition of same.  If so, we want to be
@@ -220,7 +222,8 @@ maybeclass()
 	ungettoken(c, dummy);
     }
 
-    if (isclass = (c == '{'))
+    isclass = (c == '{');
+    if (isclass != 0)
     {
 	stats_t *class = stats_push(classname, STATS_CLASS);
 
@@ -243,8 +246,8 @@ maybeclass()
     return isclass;
 }
 
-int
-maybenamespace()
+static int
+maybenamespace(void)
 /*
  * We've just seen "namespace" at the top level in a file so
  * we may be entering a definition of same (if we next find "token {").
@@ -280,7 +283,8 @@ maybenamespace()
 	ungettoken(c, dummy);
     }
 
-    if (isns = (c == '{'))
+    isns = (c == '{');
+    if (isns != 0)
     {
 	stats_t *ns = stats_push(nsname, STATS_NAMESPACE);
 
@@ -305,7 +309,7 @@ maybenamespace()
 
 
 void
-findsemicolon()
+findsemicolon(void)
 {
     int c;
 
@@ -339,7 +343,6 @@ getoverloadedop(char *buf)
  * print a warning and bail out.
  */
 {
-    char *savebuf = buf;
     char tmpbuf[256];
     int c = gettoken(tmpbuf, NULL, NULL);
 

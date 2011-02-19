@@ -19,7 +19,6 @@
 extern int optind;
 #endif
 
-static char _RcsVersion[] = "@(#)REV: $Header: /gjd/tools/pmccabe/pmccabe.c 1.23 2001/01/26 23:00:34 bame Exp $";
 static const char _Version[] = "@(#) pmccabe 2.5";
 
 int Cyco = 0;
@@ -205,7 +204,7 @@ stats_push(const char *name, int type)
 }
 
 stats_t *
-stats_current()
+stats_current(void)
 {
     if (Nstats < 1)
     {
