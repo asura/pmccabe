@@ -58,3 +58,9 @@ gettoken.o \
 nmain.o :		pmccabe.h dmain.h
 
 pmccabe.o :		pmccabe.h getopt.h
+
+# gcc
+CFLAGS	= -g -Wall -Wstrict-prototypes -Wold-style-definition -Wswitch-default -Wunreachable-code -Wcast-qual -Wmissing-prototypes -Wshadow
+
+.c.o:
+	$(CC) $(CFLAGS) -c $< -o $@
