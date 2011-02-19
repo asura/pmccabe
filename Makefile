@@ -61,6 +61,12 @@ pmccabe.o :		pmccabe.h getopt.h
 
 # gcc
 CFLAGS	= -g -Wall -Wstrict-prototypes -Wold-style-definition -Wswitch-default -Wunreachable-code -Wcast-qual -Wmissing-prototypes -Wshadow
+CFLAGS += -fprofile-arcs -ftest-coverage
+
+coverage:	FORCE
+	gcovr.py -b -x > coverage.xml
 
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
+
+FORCE:
