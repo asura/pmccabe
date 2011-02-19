@@ -1,0 +1,8 @@
+# Copyright (c) 2002 Hewlett-Packard under GPL version 2 or later
+include Makefile
+
+# gcc
+CFLAGS	= -g -Wall -Wstrict-prototypes -Wold-style-definition -Wswitch-default -Wunreachable-code -Wcast-qual -Wmissing-prototypes -Wshadow
+
+.c.o:
+	$(CC) $(CFLAGS) -c $< -o $@

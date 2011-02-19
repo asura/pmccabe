@@ -9,3 +9,5 @@ html
 decomment
 pmccabe
 coverage.dot
+gcov
+lcov.info

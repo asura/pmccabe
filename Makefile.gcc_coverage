@@ -1,0 +1,11 @@
+# Copyright (c) 2002 Hewlett-Packard under GPL version 2 or later
+include Makefile.gcc
+
+CFLAGS += -fprofile-arcs -ftest-coverage
+
+coverage:	FORCE
+	gcovr.py -b -x > coverage.xml
+	lcov -c -d . -o lcov.info
+	genhtml -o gcov lcov.info
+
+FORCE:
