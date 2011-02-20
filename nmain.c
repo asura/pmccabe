@@ -59,48 +59,6 @@ file(char *fname, FILE *f)
     stats_pop(filestats);
 }
 
-void
-cycoprintstats(stats_t *fs, stats_t *fn)
-{
-    int basic, cycloswitch, cyclocase;
-
-    basic = fn->nfor + fn->nwhile + fn->nif + fn->nand + fn->nor + fn->nq;
-
-    cycloswitch = 1 + basic + fn->nswitch;
-    cyclocase = 1 + basic + fn->ncase;
-
-    printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%s\t%s\n",
-	cycloswitch,
-	cyclocase,
-	fn->nstatements,
-	fn->firstline,
-	fn->defline,
-	fn->lastline,
-	fn->lastline - fn->firstline + 1,
-	fs->name,
-	fn->name);
-}
-
-void
-softbuildprintstats(stats_t *fs, stats_t *fn)
-{
-    int basic, cycloswitch, cyclocase;
-
-    basic = fn->nfor + fn->nwhile + fn->nif + fn->nand + fn->nor + fn->nq;
-
-    cycloswitch = 1 + basic + fn->nswitch;
-    cyclocase = 1 + basic + fn->ncase;
-
-    printf("\"%s\", line %d: %s%%\t%d\t%d\t%d\t%d\t%d\n",
-	fs->name, fn->defline,
-	fn->name,
-	cycloswitch,
-	cyclocase,
-	fn->nstatements,
-	fn->firstline,
-	fn->lastline - fn->firstline + 1);
-}
-
 static void
 printname(const stats_t *sp)
 {
@@ -126,12 +84,13 @@ printname(const stats_t *sp)
 	case STATS_NAMESPACE:
 	    printf("%s::", sp->name);
 	    break;
+    default:
+        exit(4);
 	}
     }
 }
 
 typedef struct {
-    int basic;
     int cycloswitch;
     int cyclocase;
     int snlines;
@@ -140,12 +99,12 @@ typedef struct {
 static void
 summarize_stats(stats_t* const sp, stats_summary_t* const summary)
 {
-    summary->basic = sp->nfor + sp->nwhile + sp->nif + sp->nand + sp->nor + sp->nq;
+    int basic = sp->nfor + sp->nwhile + sp->nif + sp->nand + sp->nor + sp->nq;
 
-    sp->nstatements = summary->basic - sp->nand - sp->nor + sp->nsemicolons;
+    sp->nstatements = basic - sp->nand - sp->nor + sp->nsemicolons;
 
-    summary->cycloswitch = sp->nfunctions + summary->basic + sp->nswitch;
-    summary->cyclocase = sp->nfunctions + summary->basic + sp->ncase;
+    summary->cycloswitch = sp->nfunctions + basic + sp->nswitch;
+    summary->cyclocase = sp->nfunctions + basic + sp->ncase;
 
     if (Ncssfunction)
     {
@@ -157,7 +116,7 @@ summarize_stats(stats_t* const sp, stats_summary_t* const summary)
     }
 }
 static const stats_t*
-backward_stats(const stats_t* const sp)
+search_backward_file_stats(const stats_t* const sp)
 {
     const stats_t *fsp;
 
@@ -297,7 +256,7 @@ printstats(stats_t *sp)
 
     summarize_stats(sp, &summary);
 
-    fsp = backward_stats(sp);
+    fsp = search_backward_file_stats(sp);
 
     switch(sp->type)
     {
@@ -313,5 +272,7 @@ printstats(stats_t *sp)
     case STATS_CLASS:
         print_class_stats();
 	break;
+    default:
+        exit(4);
     }
 }
