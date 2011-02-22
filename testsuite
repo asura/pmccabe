@@ -30,6 +30,7 @@ TEST1()
     shift
     ./pmccabe -vt $* > $f.out 2>&1
     ./pmccabe -vnt $* >> $f.out 2>&1
+    ./pmccabe -vzft $* >> $f.out 2>&1
     if [ -f $f.ref -a -z "$REFERENCE" ]
     then
 	cmp $f.ref $f.out || error=2

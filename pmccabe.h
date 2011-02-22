@@ -25,6 +25,7 @@
 #define T_OPERATOR (T_WORDS + 11)
 #define T_CONST (T_WORDS + 12)
 #define T_NAMESPACE (T_WORDS + 13)
+#define T_RETURN (T_WORDS + 14)
 
 #define STREQUAL(a, b)	(strcmp((a),(b)) == 0)
 #define ZERO(x)	memset(&x, 0, sizeof x)
@@ -38,6 +39,8 @@
 #define STATS_CLASS	3
 #define STATS_NAMESPACE	4
 
+#define MATCHPAREN_BUF_LEN 1024
+
 struct stats_t
 {
     char *name;
@@ -50,6 +53,8 @@ struct stats_t
     int nfor, nwhile, nswitch, ncase, nif;
     int nand, nor, nq;
     int nsemicolons;
+    int nparams;
+    int nreturns;
     struct stats_t *prev;
     char type;
 };
@@ -79,6 +84,7 @@ extern int Filesonly;
 extern int Line;
 extern int Ncss;
 extern int Ncssfunction;
+extern int OutputDetails;
 extern int Unbuf[256];
 extern int *Unptr;
 
@@ -102,7 +108,7 @@ int ncss_files(int argc, char *argv []);
 
 /* gettoken.c */
 int matchcurly(void);
-int matchparen(void);
+int matchparen(char* const buf);
 int skipws(void);
 int getsimpleident(char *buf);
 int gettoken(char *buf, int *line, int *nLine);

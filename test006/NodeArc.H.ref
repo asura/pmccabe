@@ -42,3 +42,39 @@ Modified McCabe Cyclomatic Complexity
    CSL PCT  NCSL PCT  TOTAL  FILENAME
     99  18   440  82    539  test006/NodeArc.H
     99  18   440  82    539  (total files: 1)
+filename	definition line number	function	# Parameters	# Returns	Modified McCabe Cyclomatic Complexity	Traditional McCabe Cyclomatic Complexity	for	while	case	if	Myers Interval	?	# Statements in function	# lines in function	LOC	lLOC
+test006/NodeArc.H	31	LabelledNode::~LabelledNode	0	1	1	1	0	0	0	0	0	0	1	1	1	1
+test006/NodeArc.H	33	LabelledNode::label	0	1	1	1	0	0	0	0	0	0	1	1	1	1
+test006/NodeArc.H	37	LabelledNode::shapeType	0	1	1	1	0	0	0	0	0	0	1	1	1	1
+test006/NodeArc.H	39	LabelledNode::borderWidth	0	1	1	1	0	0	0	0	0	0	1	1	1	1
+test006/NodeArc.H	40	LabelledNode::borderWidth	1	1	1	1	0	0	0	0	0	0	1	1	1	1
+test006/NodeArc.H	42	LabelledNode::xeNode	0	1	1	1	0	0	0	0	0	0	1	1	1	1
+test006/NodeArc.H	43	LabelledNode::xeNode	1	1	1	1	0	0	0	0	0	0	1	1	1	1
+test006/NodeArc.H	107	LabelledArc::arcContains	3	1	2	2	0	0	0	1	0	0	5	10	10	4
+test006/NodeArc.H	118	LabelledArc::labelContains	3	1	2	2	0	0	0	1	0	0	7	13	13	6
+test006/NodeArc.H	134	LabelledArc::getLabelOrigin	2	1	1	1	0	0	0	0	0	0	3	6	6	3
+test006/NodeArc.H	141	LabelledArc::arrowPoints	2	1	2	2	0	0	0	1	0	0	5	10	9	4
+test006/NodeArc.H	152	LabelledArc::arrowBoundingBox	2	1	1	1	0	0	0	0	0	0	6	9	9	6
+test006/NodeArc.H	162	LabelledArc::arcBoundingBox	2	1	4	4	0	0	0	2	1	0	9	12	12	7
+test006/NodeArc.H	179	LabelledArc::drawArrow	3	1	2	2	0	0	0	1	0	0	5	9	9	4
+test006/NodeArc.H	200	LabelledArc::owner	0	1	1	1	0	0	0	0	0	0	1	1	1	1
+test006/NodeArc.H	202	LabelledArc::getLabel	0	1	1	1	0	0	0	0	0	0	1	1	1	1
+test006/NodeArc.H	205	LabelledArc::getLabelColor	0	1	1	1	0	0	0	0	0	0	1	1	1	1
+test006/NodeArc.H	208	LabelledArc::getLabelVisible	0	1	1	1	0	0	0	0	0	0	1	1	1	1
+test006/NodeArc.H	234	SiblingList::SiblingList	0	1	1	1	0	0	0	0	0	0	3	1	1	3
+test006/NodeArc.H	235	SiblingList::~SiblingList	0	1	1	1	0	0	0	0	0	0	1	1	1	1
+test006/NodeArc.H	237	SiblingList::count	0	1	1	1	0	0	0	0	0	0	1	1	1	1
+test006/NodeArc.H	238	SiblingList::max	0	1	1	1	0	0	0	0	0	0	1	1	1	1
+test006/NodeArc.H	244	SiblingList::isSibling	1	1	3	3	1	0	0	1	0	0	8	11	11	5
+test006/NodeArc.H	279	RankedArc::arrowPoints	2	1	5	5	0	0	0	3	1	0	18	28	24	15
+test006/NodeArc.H	308	RankedArc::computeRank	0	1	2	2	0	0	0	0	0	1	2	3	3	1
+test006/NodeArc.H	312	RankedArc::selfish	0	1	2	2	0	0	0	0	0	1	2	1	1	1
+test006/NodeArc.H	314	RankedArc::arcContains	3	1	8	8	1	0	0	5	1	0	28	52	42	21
+test006/NodeArc.H	369	RankedArc::getLabelOrigin	2	1	4	4	0	0	0	2	1	0	9	15	15	7
+test006/NodeArc.H	385	RankedArc::arcBoundingBox	2	1	6	6	0	0	0	4	1	0	27	40	37	23
+test006/NodeArc.H	426	RankedArc::drawArc	3	1	3	3	0	0	0	1	1	0	8	14	13	7
+test006/NodeArc.H	441	RankedArc::drawRankedArc	4	1	10	10	2	0	0	6	1	0	27	43	38	17
+test006/NodeArc.H	485	RankedArc::drawArrow	3	1	6	6	0	0	0	4	1	0	21	36	31	17
+test006/NodeArc.H	526	RankedArc::~RankedArc	0	1	2	2	0	0	0	1	0	0	3	7	5	2
+test006/NodeArc.H	n/a	n/a	39	33	80	80	4	0	0	33	8	2	223	539	403	180
+Total	n/a	n/a	39	33	80	80	4	0	0	33	8	2	223	539	403	180

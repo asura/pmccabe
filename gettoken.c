@@ -1,5 +1,6 @@
 /* Copyright (c) 2002 Hewlett-Packard under GPL version 2 or later */
 #include <stdio.h>
+#include <assert.h>
 #include "pmccabe.h"
 
 #include "dmain.h"
@@ -34,23 +35,36 @@ matchcurly(void)
 }
 
 int
-matchparen(void)
+matchparen(char* const buf)
 {
     int c;
     int nest = 1;
+    char* p = buf;
 
+    assert(1 <= MATCHPAREN_BUF_LEN);
     while (nest > 0 && (c = ncss_Getchar()) != EOF)
     {
 	switch (c)
 	{
 	case '(':
+        *p = c;
+        ++p;
 	    nest++;
 	    break;
 
 	case ')':
+        *p = 0x00;
 	    nest--;
 	    break;
+    default:
+        *p = c;
+        ++p;
 	}
+        if (MATCHPAREN_BUF_LEN <= p - buf)
+        {
+            Exit = 10;
+            fileerror("not enough buffer for matchparen");
+        }
     }
 
     if (nest > 0 /* && c == EOF */ )
@@ -142,6 +156,18 @@ identify(const char *ident)
     case 'n':
         if (STREQUAL(ident, "namespace"))
 	    r = T_NAMESPACE;
+	break;
+    case 'r':
+        if (STREQUAL(ident, "return"))
+	    r = T_RETURN;
+	break;
+    case 'e':
+        if (STREQUAL(ident, "exit"))
+	    r = T_RETURN;
+	break;
+    case 'a':
+        if (STREQUAL(ident, "abort"))
+	    r = T_RETURN;
 	break;
     }
 

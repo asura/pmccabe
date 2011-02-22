@@ -312,13 +312,14 @@ void
 findsemicolon(void)
 {
     int c;
+    char dummy[MATCHPAREN_BUF_LEN];
 
     while ((c = ncss_Getchar()) != EOF && c != ';')
     {
 	switch (c)
 	{
 	case '(':
-	    c = matchparen();
+	    c = matchparen(dummy);
 	    break;
 	case '{':
 	    c = matchcurly();
@@ -394,6 +395,35 @@ getoverloadedop(char *buf)
     return c;
 }
 
+static int
+get_param_count(const char* const params)
+{
+    size_t i;
+    int count;
+    size_t len;
+
+    /* 空文字列なら0。voidだけも0。それ以外は1以上で、","があれば+1。 */
+    len = strlen(params);
+    if (len == 0)
+    {
+        return 0;
+    }
+
+    if (strncmp(params, "void", len) == 0)
+    {
+        return 0;
+    }
+
+    count = 1;
+    for (i = 0; i < len; ++i)
+    {
+        if (params[i] == ',')
+        {
+            ++count;
+        }
+    }
+    return count;
+}
 void
 possiblefn(stats_t *stats, const char *name, int line1, int defline, int nLine1)
 /*
@@ -404,6 +434,9 @@ possiblefn(stats_t *stats, const char *name, int line1, int defline, int nLine1)
     char dummy[257];
     int nstatements = 0;	/* in case there's code prior to the { */
     int c;
+    char buf_params[MATCHPAREN_BUF_LEN];
+    char dummy2[MATCHPAREN_BUF_LEN];
+    int nparams = 0;
 
     if (strlen(name) == 0)
     {
@@ -412,8 +445,9 @@ possiblefn(stats_t *stats, const char *name, int line1, int defline, int nLine1)
     }
     else
     {
-	if ((c = matchparen()) != EOF)
+	if ((c = matchparen(buf_params)) != EOF)
 	{
+        nparams = get_param_count(buf_params);
 	    c = gettoken(dummy, NULL, NULL);
 
 	    switch (c)
@@ -452,7 +486,7 @@ possiblefn(stats_t *stats, const char *name, int line1, int defline, int nLine1)
 		/* operator overloading of an odd typecast or something. */
 		/* The function name will be wrong but who cares :-> */
 
-		c = matchparen();
+		c = matchparen(dummy2);
 		if (c != EOF)
 		    c = gettoken(dummy, NULL, NULL);
 		break;
@@ -470,10 +504,15 @@ possiblefn(stats_t *stats, const char *name, int line1, int defline, int nLine1)
 		fn->firstline = line1;
 		fn->defline = defline;
 		fn->nsemicolons = nstatements;
+        fn->nparams = nparams;
 
 		c = countfunction(fn);
 		fn->nLines = ncss_Line - nLine1;
 		stats->nLines -= fn->nLines;
+        if (fn->nreturns == 0)
+        {
+            fn->nreturns = 1;
+        }
 		if (!Totalsonly && !Filesonly)
 		    printstats(fn);
 		stats_pop(fn);
@@ -489,6 +528,7 @@ prefunction(int *nstatements)
  * ident(args) after function declaration as a statement.
  */
 {
+    char dummy[MATCHPAREN_BUF_LEN];
     int c;
 
     (*nstatements)++;
@@ -498,7 +538,7 @@ prefunction(int *nstatements)
 	switch(c)
 	{
 	case '(':
-	    c = matchparen();
+	    c = matchparen(dummy);
 	    break;
 	case ',':
 	    (*nstatements)++;
@@ -553,6 +593,10 @@ countfunction(stats_t *fn)
 	case T_STRUCT:
 	    if (maybeclass())
 		fn->nsemicolons--;
+	    break;
+
+	case T_RETURN:
+	    fn->nreturns++;
 	    break;
 
 	default:

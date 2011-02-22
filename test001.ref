@@ -18,3 +18,15 @@ Modified McCabe Cyclomatic Complexity
    CSL PCT  NCSL PCT  TOTAL  FILENAME
      9  24    28  76     37  test001
      9  24    28  76     37  (total files: 1)
+filename	definition line number	function	# Parameters	# Returns	Modified McCabe Cyclomatic Complexity	Traditional McCabe Cyclomatic Complexity	for	while	case	if	Myers Interval	?	# Statements in function	# lines in function	LOC	lLOC
+test001	2	start	0	1	1	1	0	0	0	0	0	0	0	3	3	0
+test001	12	some_class::~some_class	0	1	1	1	0	0	0	0	0	0	0	6	6	0
+test001	14	destructor::~destructor	1	1	1	1	0	0	0	0	0	0	0	1	1	0
+test001	15	destructor2::~destructor	1	1	1	1	0	0	0	0	0	0	0	1	1	0
+test001	17	main	2	1	1	1	0	0	0	0	0	0	4	4	4	4
+test001	22	xyzzy::operator()	2	1	1	1	0	0	0	0	0	0	0	1	1	0
+test001	27	named_class::member_function	0	1	1	1	0	0	0	0	0	0	0	1	1	0
+test001	32	unnamed::member_function	0	1	1	1	0	0	0	0	0	0	0	1	1	0
+test001	36	xyzzy::operator+=	2	1	1	1	0	0	0	0	0	0	0	3	3	0
+test001	n/a	n/a	8	9	9	9	0	0	0	0	0	0	12	37	28	12
+Total	n/a	n/a	8	9	9	9	0	0	0	0	0	0	12	37	28	12

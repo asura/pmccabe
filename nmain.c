@@ -93,6 +93,7 @@ printname(const stats_t *sp)
 typedef struct {
     int cycloswitch;
     int cyclocase;
+    int myersinterval;
     int snlines;
 } stats_summary_t;
 
@@ -105,6 +106,7 @@ summarize_stats(stats_t* const sp, stats_summary_t* const summary)
 
     summary->cycloswitch = sp->nfunctions + basic + sp->nswitch;
     summary->cyclocase = sp->nfunctions + basic + sp->ncase;
+    summary->myersinterval = sp->nand + sp->nor;
 
     if (Ncssfunction)
     {
@@ -124,6 +126,11 @@ search_backward_file_stats(const stats_t* const sp)
     {
     }
     return fsp;
+}
+static int
+get_logical_loc(const stats_t* const sp)
+{
+    return (sp->nsemicolons - sp->nfor);
 }
 static void
 print_total_stats(const stats_summary_t* const summary, const stats_t* const sp)
@@ -149,6 +156,24 @@ print_total_stats(const stats_summary_t* const summary, const stats_t* const sp)
 		summary->snlines,
 		"Total");
 	}
+    else if (OutputDetails)
+    {
+	    printf("Total\tn/a\tn/a\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
+               sp->nparams,
+               sp->nreturns,
+		    summary->cycloswitch,
+		    summary->cyclocase,
+               sp->nfor,
+               sp->nwhile,
+               sp->ncase,
+               sp->nif,
+		    summary->myersinterval,
+               sp->nq,
+		    sp->nstatements,
+               sp->lastline - sp->firstline + 1,
+               sp->nLines + 1,
+               get_logical_loc(sp));
+    }
 	else
 	{
 	    printf("%d\t%d\t%d\tn/a\t%d\t",
@@ -186,6 +211,25 @@ print_file_stats(const stats_summary_t* const summary, const stats_t* const sp, 
 		summary->snlines,
 		fsp->name);
 	}
+    else if (OutputDetails)
+    {
+	    printf("%s\tn/a\tn/a\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
+               fsp->name,
+               sp->nparams,
+               sp->nreturns,
+		    summary->cycloswitch,
+		    summary->cyclocase,
+               sp->nfor,
+               sp->nwhile,
+               sp->ncase,
+               sp->nif,
+		    summary->myersinterval,
+               sp->nq,
+		    sp->nstatements,
+               sp->lastline - sp->firstline + 1,
+               sp->nLines + 1,
+               get_logical_loc(sp));
+    }
 	else
 	{
 	    printf("%d\t%d\t%d\t%d\t%d\t",
@@ -227,6 +271,28 @@ print_function_stats(const stats_summary_t* const summary, const stats_t* const 
 	    printname(sp);
 	    putchar('\n');
 	}
+    else if (OutputDetails)
+    {
+	    printf("%s\t%d\t",
+               fsp->name,
+               sp->defline);
+	    printname(sp);
+	    printf("\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
+               sp->nparams,
+               sp->nreturns,
+		    summary->cycloswitch,
+		    summary->cyclocase,
+               sp->nfor,
+               sp->nwhile,
+               sp->ncase,
+               sp->nif,
+		    summary->myersinterval,
+               sp->nq,
+		    sp->nstatements,
+               sp->lastline - sp->firstline + 1,
+               sp->nLines + 1,
+               get_logical_loc(sp));
+    }
 	else
 	{
 	    printf("%d\t%d\t%d\t%d\t%d\t",

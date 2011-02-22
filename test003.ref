@@ -12,3 +12,9 @@ Modified McCabe Cyclomatic Complexity
    CSL PCT  NCSL PCT  TOTAL  FILENAME
      6  25    18  75     24  test003
      6  25    18  75     24  (total files: 1)
+filename	definition line number	function	# Parameters	# Returns	Modified McCabe Cyclomatic Complexity	Traditional McCabe Cyclomatic Complexity	for	while	case	if	Myers Interval	?	# Statements in function	# lines in function	LOC	lLOC
+test003	6	T1::operator_long()	0	1	1	1	0	0	0	0	0	0	1	1	1	1
+test003	15	T1::operator_long()	0	1	1	1	0	0	0	0	0	0	1	4	4	1
+test003	20	T2::operator_long()	0	1	1	1	0	0	0	0	0	0	1	4	4	1
+test003	n/a	n/a	0	3	3	3	0	0	0	0	0	0	7	24	18	7
+Total	n/a	n/a	0	3	3	3	0	0	0	0	0	0	7	24	18	7

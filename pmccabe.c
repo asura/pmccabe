@@ -31,6 +31,7 @@ int Files = 0;
 int Filesonly = 0;
 int Ncss = 0;
 int Ncssfunction = 0;
+int OutputDetails = 0;
 
 static char Normalheader[] = "Modified McCabe Cyclomatic Complexity\n"
 "|   Traditional McCabe Cyclomatic Complexity\n"
@@ -47,6 +48,24 @@ static char NCSSheader[] = "Modified McCabe Cyclomatic Complexity\n"
 "|       |        |       |   # uncommented nonblank lines in function\n"
 "|       |        |       |       |  filename(definition line number):function\n"
 "|       |        |       |       |           |\n";
+
+static char Detailsheader[] = "filename\t"
+    "definition line number\t"
+    "function\t"
+    "# Parameters\t"
+    "# Returns\t"
+    "Modified McCabe Cyclomatic Complexity\t"
+    "Traditional McCabe Cyclomatic Complexity\t"
+    "for\t"
+    "while\t"
+    "case\t"
+    "if\t"
+    "Myers Interval\t"
+    "?\t"
+    "# Statements in function\t"
+    "# lines in function\t"
+    "LOC\t"
+    "lLOC\n";
 
 static char Usage[] =
 	"Usage: %s [-vdCbtTfFVn]\n"
@@ -77,7 +96,7 @@ main(int argc, char *argv[])
 
     /* grab command-line options */
 
-    while ((c = getopt(argc, argv, "CvbdTtfFVnc")) != EOF)
+    while ((c = getopt(argc, argv, "CvbdTtfFVncz")) != EOF)
     {
 	switch(c)
 	{
@@ -117,6 +136,9 @@ main(int argc, char *argv[])
 	case 'n':
 	    Ncss = 1;
 	    break;
+	case 'z':
+	    OutputDetails = 1;
+	    break;
 	case '?':
 	default:
 	    fprintf(stderr, Usage, progname);
@@ -138,7 +160,18 @@ main(int argc, char *argv[])
 
 	if (Verbose && !Cyco && !Softbuild)
 	{
-	    fputs(Ncssfunction ? NCSSheader : Normalheader, stdout);
+        if (Ncssfunction != 0)
+        {
+            fputs(NCSSheader, stdout);
+        }
+        else if (OutputDetails != 0)
+        {
+            fputs(Detailsheader, stdout);
+        }
+        else
+        {
+            fputs(Normalheader, stdout);
+        }
 	}
 
 	if (argc == 1)
@@ -259,6 +292,8 @@ stats_add(stats_t *result, stats_t *sp)
     result->nfunctions += sp->nfunctions;
     result->lastline += sp->lastline - sp->firstline + 1;
     result->nLines += sp->nLines;
+    result->nparams += sp->nparams;
+    result->nreturns += sp->nreturns;
 }
 
 void

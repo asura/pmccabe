@@ -17,3 +17,14 @@ Modified McCabe Cyclomatic Complexity
    CSL PCT  NCSL PCT  TOTAL  FILENAME
      5  12    35  88     40  test015
      5  12    35  88     40  (total files: 1)
+filename	definition line number	function	# Parameters	# Returns	Modified McCabe Cyclomatic Complexity	Traditional McCabe Cyclomatic Complexity	for	while	case	if	Myers Interval	?	# Statements in function	# lines in function	LOC	lLOC
+test015	2	Spreadsheetns::ACosFormula::ACosFormula	0	1	1	1	0	0	0	0	0	0	0	3	2	0
+test015	6	Spreadsheetns::ACosFormula::ACosFormula	1	1	3	3	0	0	0	1	1	0	3	5	5	2
+test015	12	Spreadsheetns::ACosFormula::getResult	0	1	3	3	0	0	0	1	1	0	3	6	6	2
+test015	21	foo::bar::bar	0	1	1	1	0	0	0	0	0	0	0	1	1	0
+test015	25	foo::foo1::bar::bar	0	1	1	1	0	0	0	0	0	0	0	1	1	0
+test015	28	foo::fff	0	1	1	1	0	0	0	0	0	0	0	2	2	0
+test015	32	bar::bar	0	1	1	1	0	0	0	0	0	0	0	1	1	0
+test015	36	anonymous_namespace::bar::bar	0	1	1	1	0	0	0	0	0	0	0	1	1	0
+test015	n/a	n/a	1	8	12	12	0	0	0	2	2	0	8	40	35	6
+Total	n/a	n/a	1	8	12	12	0	0	0	2	2	0	8	40	35	6

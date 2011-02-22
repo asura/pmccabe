@@ -12,3 +12,9 @@ Modified McCabe Cyclomatic Complexity
    CSL PCT  NCSL PCT  TOTAL  FILENAME
     11  34    21  66     32  test006/Grapher.H
     11  34    21  66     32  (total files: 1)
+filename	definition line number	function	# Parameters	# Returns	Modified McCabe Cyclomatic Complexity	Traditional McCabe Cyclomatic Complexity	for	while	case	if	Myers Interval	?	# Statements in function	# lines in function	LOC	lLOC
+test006/Grapher.H	16	Grapher::Grapher	6	1	1	1	0	0	0	0	0	0	3	11	11	3
+test006/Grapher.H	27	Grapher::~Grapher	0	1	1	1	0	0	0	0	0	0	0	1	1	0
+test006/Grapher.H	29	Grapher::xegraph	0	1	1	1	0	0	0	0	0	0	1	1	1	1
+test006/Grapher.H	n/a	n/a	6	3	3	3	0	0	0	0	0	0	5	32	19	5
+Total	n/a	n/a	6	3	3	3	0	0	0	0	0	0	5	32	19	5
