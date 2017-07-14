@@ -3,11 +3,11 @@ Section: devel
 Priority: optional
 Maintainer: Paul Bame <bame@debian.org>
 Build-Depends: debhelper (>> 5.0.0)
-Standards-Version: 3.7.3
+Standards-Version: 3.9.1
 
 Package: pmccabe
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: McCabe-style function complexity and line counting for C and C++
  Pmccabe calculates McCabe-style cyclomatic complexity for C and C++
  source code.  Per-function complexity may be used for spotting likely

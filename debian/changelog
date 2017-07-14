@@ -1,3 +1,14 @@
+pmccabe (2.6) unstable; urgency=low
+
+  * From Ubuntu:
+  * Fixed 364338 pdiff script change has bug
+  * Fixed 499589 infinite loop with namespaced struct variable declaration
+  * Thanks to matt_hargett for bugs and patches
+  * Fixed a problem parsing DOS-format CRLF files
+  * Updated deb stds version and fixed some lintian warnings
+
+ -- Paul Bame <bame@debian.org>  Fri, 06 Aug 2010 14:18:25 -0400
+
 pmccabe (2.5) unstable; urgency=low
 
   * updated codechanges and pdiff to be bashism safe

@@ -28,7 +28,7 @@ else
     (cd $olddir && cat $oldlist | xargs pmccabe -C)
 fi | cycocvt | sort >old.1
 
-prnitf "\nAnalyzing %s ..." "$newdir" >&2
+printf "\nAnalyzing %s ..." "$newdir" >&2
 if $usefind
 then
     (cd $newdir && find . -type f -name '*.[cChH]*' -print | xargs pmccabe -C)
