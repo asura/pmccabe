@@ -45,6 +45,8 @@ decomment(void)
 	    PUTCHAR(EOF);
 	    break;
 	}
+	if (c == '\r')
+	    continue;
 
 	switch (state)
 	{

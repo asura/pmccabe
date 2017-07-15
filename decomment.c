@@ -9,6 +9,8 @@
 
 #ifdef WIN32
 #include "getopt.h"
+#else
+#include <getopt.h>
 #endif
 
 #ifdef NEED_OPTIND

@@ -192,7 +192,7 @@ maybeclass(void)
     int isclass = 0;
     int c;
 
-    if ((c = gettoken(classname, NULL, NULL)) == T_IDENT)
+    if ((c =gettoken(classname, NULL, NULL)) == T_IDENT)
     {
 	/* "class name" */
 	switch(c = gettoken(dummy, NULL, NULL))
@@ -200,9 +200,22 @@ maybeclass(void)
 	case '{':	/* "class name {" */
 	    break;
 
-	case ':':	/* "class name : ---- look for { */
-	    while ((c = gettoken(dummy, NULL, NULL)) != '{')
+	case ':':	/* "class name :" */
+            c = gettoken(dummy, NULL, NULL);
+	    if (c == ':')
 	    {
+	        /* "class name :: */
+		/* this is a namespace-qualified declaration since cannot
+		   have a definition like this. */
+		break;
+	    }
+	    else
+	    {
+		/* "clas name : [one or more initializers]" */
+	        while (c != '{')
+		{
+		    c = gettoken(dummy, NULL, NULL);
+		}
 	    }
 	    break;
 
