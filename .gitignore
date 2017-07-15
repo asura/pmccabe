@@ -11,3 +11,4 @@ pmccabe
 coverage.dot
 gcov
 lcov.info
+/build/
